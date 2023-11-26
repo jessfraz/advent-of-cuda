@@ -50,6 +50,7 @@ jobs:
         run: |
             sudo apt-get install llvm-7
             sudo ln -s /usr/bin/llvm-config-7 /usr/local/bin/llvm-config
+            echo "PATH=${CUDA_PATH}/nvvm/lib64:/root/.cargo/bin:${PATH}" >> $GITHUB_ENV
 
       - name: Load Rust Cache
         uses: Swatinem/rust-cache@v2
