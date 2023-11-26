@@ -5,8 +5,14 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 [dependencies]
-cuda_std = "0.2.2"
+anyhow = "1.0.75"
+cust = "0.3.2"
+
+[workspace]
+members = [
+    "gpu",
+]
+
+[build-dependencies]
+cuda_builder = "0.3.0"
