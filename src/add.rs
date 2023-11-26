@@ -53,10 +53,10 @@ pub fn add(a: &[f32], b: &[f32]) -> Result<Vec<f32>> {
         launch!(
             // slices are passed as two parameters, the pointer and the length.
             func<<<grid_size, block_size, 0, stream>>>(
-                a.to_vec().as_device_ptr(),
-                a.len(),
-                b.to_vec().as_device_ptr(),
-                b.len(),
+                lhs_gpu.as_device_ptr(),
+                lhs_gpu.len(),
+                rhs_gpu.as_device_ptr(),
+                rhs_gpu.len(),
                 out_buf.as_device_ptr(),
             )
         )?;
