@@ -32,7 +32,7 @@ pub fn add(a: &[f32], b: &[f32]) -> Result<Vec<f32>> {
     let mut out = vec![0.0f32; length];
     let out_buf = out.as_slice().as_dbuf()?;
 
-    // retrieve the add kernel from the module so we can calculate the right launch config.
+    // Retrieve the add kernel from the module so we can calculate the right launch config.
     let func = module.get_function("add")?;
 
     // Use the CUDA occupancy API to find an optimal launch configuration for the grid and block size.
