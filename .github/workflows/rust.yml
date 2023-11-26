@@ -52,7 +52,7 @@ jobs:
             sudo ln -s /usr/bin/llvm-config-7 /usr/local/bin/llvm-config
             echo "PATH=${CUDA_PATH}/nvvm/lib64:${PATH}" >> $GITHUB_ENV
             cat $GITHUB_ENV
-            find / -name=libnvvm.so.4
+            find / -iname=libnvvm.so.4
 
       - name: Load Rust Cache
         uses: Swatinem/rust-cache@v2
