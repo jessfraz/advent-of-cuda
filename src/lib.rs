@@ -5,4 +5,4 @@
 pub mod add;
 
 /// The PTX code for the GPU kernel.
-pub(crate) static PTX: &str = include_str!("../../resources/gpu.ptx");
+pub(crate) static PTX: &str = include_str!("../resources/gpu.ptx");
