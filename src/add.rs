@@ -69,3 +69,17 @@ pub fn add(a: &[f32], b: &[f32]) -> Result<Vec<f32>> {
 
     Ok(out)
 }
+
+mod tests {
+    use pretty_assertions::assert_eq;
+
+    #[test]
+    fn test_add() {
+        let a = vec![1.0f32, 2.0, 3.0, 4.0];
+        let b = vec![5.0f32, 6.0, 7.0, 8.0];
+
+        let c = super::add(&a, &b).unwrap();
+
+        assert_eq!(c, vec![6.0f32, 8.0, 10.0, 12.0]);
+    }
+}
