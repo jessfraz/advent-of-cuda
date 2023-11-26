@@ -70,6 +70,7 @@ pub fn add(a: &[f32], b: &[f32]) -> Result<Vec<f32>> {
     Ok(out)
 }
 
+#[cfg(test)]
 mod tests {
     use pretty_assertions::assert_eq;
 
