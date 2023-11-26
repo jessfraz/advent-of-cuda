@@ -7,12 +7,7 @@
 // - It registers a special attribute required by the codegen for things like figuring out
 //   what functions are GPU kernels.
 // - It explicitly includes `kernel` macro and `thread`
-#![cfg_attr(
-    target_os = "cuda",
-    no_std,
-    feature(register_attr),
-    register_attr(nvvm_internal)
-)]
+#![cfg_attr(target_os = "cuda", no_std, feature(register_attr), register_attr(nvvm_internal))]
 // To use types such as slices or arrays inside of GPU kernels
 // we allow `improper_cytypes_definitions`.
 // This is because on the CPU, such types are not guaranteed to be passed a
