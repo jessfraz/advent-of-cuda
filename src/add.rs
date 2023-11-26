@@ -22,8 +22,8 @@ pub fn add(a: &[f32], b: &[f32]) -> Result<Vec<f32>> {
     let stream = Stream::new(StreamFlags::NON_BLOCKING, None)?;
 
     // allocate the GPU memory needed to house our numbers and copy them over.
-    let lhs_gpu = a.as_slice().as_dbuf()?;
-    let rhs_gpu = b.as_slice().as_dbuf()?;
+    let lhs_gpu = a.as_dbuf()?;
+    let rhs_gpu = b.as_dbuf()?;
 
     let length = a.len();
 
@@ -53,9 +53,9 @@ pub fn add(a: &[f32], b: &[f32]) -> Result<Vec<f32>> {
         launch!(
             // slices are passed as two parameters, the pointer and the length.
             func<<<grid_size, block_size, 0, stream>>>(
-                a.as_device_ptr(),
+                a.to_vec().as_device_ptr(),
                 a.len(),
-                b.as_device_ptr(),
+                b.to_vec().as_device_ptr(),
                 b.len(),
                 out_buf.as_device_ptr(),
             )
