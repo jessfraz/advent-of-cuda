@@ -14,3 +14,5 @@ You will need cuda installed and llvm, [see
 here](https://github.com/Rust-GPU/Rust-CUDA/blob/master/guide/src/guide/getting_started.md).
 
 The kernels themselves are in the [`gpu/`](gpu/) directory. Then I test them from the code in [`src/`](src/).
+
+> This repo depends on a super old toolchain because of the rust cuda sdk. In areas the rust cuda sdk won't work for what we want, we can wrap c++ in rust.
