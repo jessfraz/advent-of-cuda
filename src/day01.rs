@@ -9,9 +9,10 @@ fn first_number(chars: &std::str::Chars) -> Result<u32> {
         if c.is_ascii_digit() {
             let number = Some(
                 c.to_digit(10)
-                    .ok_or(anyhow::anyhow!("Invalid digit: {}", c))?,
+                    .ok_or_else(|| anyhow::anyhow!("Invalid digit: {}", c))?,
             );
-            return number.ok_or(anyhow::anyhow!("No number found: {}", c));
+            return number
+                .ok_or_else(|| anyhow::anyhow!("No number found: {}", c));
         }
     }
 
@@ -25,9 +26,10 @@ fn last_number(chars: &std::str::Chars) -> Result<u32> {
         if c.is_ascii_digit() {
             let number = Some(
                 c.to_digit(10)
-                    .ok_or(anyhow::anyhow!("Invalid digit: {}", c))?,
+                    .ok_or_else(|| anyhow::anyhow!("Invalid digit: {}", c))?,
             );
-            return number.ok_or(anyhow::anyhow!("No number found: {}", c));
+            return number
+                .ok_or_else(|| anyhow::anyhow!("No number found: {}", c));
         }
     }
 
@@ -82,9 +84,9 @@ pub fn solve_part_1(input: &str) -> Result<u32> {
             continue;
         }
 
-        let mut chars = line.chars();
-        let first = first_number(&mut chars)?;
-        let last = last_number(&mut chars)?;
+        let chars = line.chars();
+        let first = first_number(&chars)?;
+        let last = last_number(&chars)?;
         nums.push(format!("{}{}", first, last).parse::<u32>()?);
     }
 
@@ -165,10 +167,10 @@ pub fn solve_part_2(input: &str) -> Result<u32> {
             continue;
         }
 
-        let nums_line = line_to_nums(&mut line.chars())?;
-        let mut chars = nums_line.chars();
-        let first = first_number(&mut chars)?;
-        let last = last_number(&mut chars)?;
+        let nums_line = line_to_nums(&line.chars())?;
+        let chars = nums_line.chars();
+        let first = first_number(&chars)?;
+        let last = last_number(&chars)?;
         nums.push(format!("{}{}", first, last).parse::<u32>()?);
     }
 
