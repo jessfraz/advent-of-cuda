@@ -65,10 +65,12 @@ fn last_number(chars: &std::str::Chars) -> Result<u32> {
 ///
 /// For example:
 ///
-///     1abc2
-///     pqr3stu8vwx
-///     a1b2c3d4e5f
-///     treb7uchet
+/// ```ignore
+/// 1abc2
+/// pqr3stu8vwx
+/// a1b2c3d4e5f
+/// treb7uchet
+/// ```
 ///
 /// In this example, the calibration values of these four lines are 12, 38, 15, and 77.
 /// Adding these together produces 142.
@@ -147,13 +149,15 @@ fn line_to_nums(chars: &std::str::Chars) -> Result<String> {
 /// Equipped with this new information, you now need to find the real first and
 /// last digit on each line. For example:
 ///
-///     two1nine
-///     eightwothree
-///     abcone2threexyz
-///     xtwone3four
-///     4nineeightseven2
-///     zoneight234
-///     7pqrstsixteen
+/// ```ignore
+/// two1nine
+/// eightwothree
+/// abcone2threexyz
+/// xtwone3four
+/// 4nineeightseven2
+/// zoneight234
+/// 7pqrstsixteen
+/// ```
 ///
 /// In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76.
 /// Adding these together produces 281.
