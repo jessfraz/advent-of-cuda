@@ -61,7 +61,7 @@ pub fn solve_part_1(input: &str) -> Result<u32> {
                     if previous_number.is_none() {
                         let number = line[x..]
                             .chars()
-                            .take_while(|c| c.is_digit(10))
+                            .take_while(|c| c.is_ascii_digit())
                             .collect::<String>()
                             .parse::<u32>()?;
                         numbers_positions.insert((y as i32, x as i32), number);
@@ -174,7 +174,7 @@ pub fn solve_part_2(input: &str) -> Result<u32> {
                     } else {
                         let number = line[x..]
                             .chars()
-                            .take_while(|c| c.is_digit(10))
+                            .take_while(|c| c.is_ascii_digit())
                             .collect::<String>()
                             .parse::<u32>()?;
                         numbers_positions.insert((y as i32, x as i32), number);
