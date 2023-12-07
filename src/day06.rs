@@ -59,13 +59,13 @@ fn parse_race(input: &str) -> Result<Race> {
         .next()
         .ok_or_else(|| anyhow::anyhow!("missing times"))?
         .trim_start_matches("Time: ")
-        .replace(" ", "")
+        .replace(' ', "")
         .parse::<u64>()?;
     let distance = lines
         .next()
         .ok_or_else(|| anyhow::anyhow!("missing distances"))?
         .trim_start_matches("Distance: ")
-        .replace(" ", "")
+        .replace(' ', "")
         .parse::<u64>()?;
 
     Ok(Race { time, distance })
