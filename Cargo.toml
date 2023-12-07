@@ -9,8 +9,6 @@ edition = "2021"
 anyhow = "1.0.75"
 rayon = "=1.5.1"
 
-[target.'cfg(macos)'.dependencies]
-
 [target.'cfg(not(target_os = "macos"))'.dependencies]
 cust = "0.3.2"
 
