@@ -1,5 +1,6 @@
 unstable_features = true
 max_width = 80
+wrap_comments = true
 edition = "2021"
 format_code_in_doc_comments = true
 format_strings = false

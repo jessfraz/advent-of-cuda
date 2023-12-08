@@ -2,10 +2,11 @@
 
 #![deny(missing_docs)]
 // This does a couple of things:
-// - It only applies the attributes if we are compiling the crate for the GPU (target_os = "cuda").
+// - It only applies the attributes if we are compiling the crate for the GPU
+//   (target_os = "cuda").
 // - It declares the crate to be `no_std` on CUDA targets.
-// - It registers a special attribute required by the codegen for things like figuring out
-//   what functions are GPU kernels.
+// - It registers a special attribute required by the codegen for things like
+//   figuring out what functions are GPU kernels.
 // - It explicitly includes `kernel` macro and `thread`
 #![cfg_attr(
     target_os = "cuda",
@@ -22,7 +23,8 @@
 // slices, and arrays are passed.
 #![allow(improper_ctypes_definitions)]
 
-// To use `alloc` or things like printing from GPU kernels (which requires alloc), we declare `alloc`.
+// To use `alloc` or things like printing from GPU kernels (which requires
+// alloc), we declare `alloc`.
 extern crate alloc;
 
 pub mod add;
