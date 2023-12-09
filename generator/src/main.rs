@@ -84,14 +84,12 @@ fn generate_template(
 
     // Read the puzzle markdown.
     let puzzle_markdown = std::fs::read_to_string(puzzle_filename)?;
-    println!("Puzzle markdown: {}", puzzle_markdown);
 
     // Clean up the puzzle markdown file.
     std::fs::remove_file(puzzle_filename)?;
 
     // Parse the puzzle markdown.
     let puzzle = Puzzle::parse(&puzzle_markdown)?;
-    println!("Puzzle: {:#?}", puzzle);
 
     let src_dir = working_dir.join("src");
 
@@ -142,7 +140,7 @@ pub fn solve_part_1(_input: &str) -> Result<u32> {{
     todo!()
 }}
 
-/// {}
+/// Not yet unlocked. {}
 pub fn solve_part_2(_input: &str) -> Result<u32> {{
     todo!()
 }}
@@ -341,7 +339,7 @@ fn replace_old_comment(
     lines.drain(comment_index..fn_index);
 
     // Insert the new comments at the comment index.
-    let part_comment = if new_comment.is_empty() {
+    let part_comment = if new_comment.trim().is_empty() {
         "/// Not yet unlocked.".to_string()
     } else {
         format!(
