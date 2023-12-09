@@ -84,12 +84,14 @@ fn generate_template(
 
     // Read the puzzle markdown.
     let puzzle_markdown = std::fs::read_to_string(puzzle_filename)?;
+    println!("Puzzle markdown: {}", puzzle_markdown);
 
     // Clean up the puzzle markdown file.
     std::fs::remove_file(puzzle_filename)?;
 
     // Parse the puzzle markdown.
     let puzzle = Puzzle::parse(&puzzle_markdown)?;
+    println!("Puzzle: {:#?}", puzzle);
 
     let src_dir = working_dir.join("src");
 
@@ -275,6 +277,13 @@ fn trim_answer(comment: &str) -> Result<String> {
         .trim()
         .to_string();
 
+    let cleaned = cleaned
+        .split("To begin, get your puzzle")
+        .next()
+        .ok_or_else(|| anyhow::anyhow!("Missing comment"))?
+        .trim()
+        .to_string();
+
     // Make sure the output width set correctly.
     let markdown = replace_doc_links(&cleaned)?;
 
@@ -332,12 +341,16 @@ fn replace_old_comment(
     lines.drain(comment_index..fn_index);
 
     // Insert the new comments at the comment index.
-    let part_comment = format!(
-        "/// {}",
-        new_comment
-            .replace('\n', "\n/// ")
-            .replace("\n/// \n", "\n///\n")
-    );
+    let part_comment = if new_comment.is_empty() {
+        "/// Not yet unlocked.".to_string()
+    } else {
+        format!(
+            "/// {}",
+            new_comment
+                .replace('\n', "\n/// ")
+                .replace("\n/// \n", "\n///\n")
+        )
+    };
     lines.insert(comment_index, &part_comment);
 
     Ok(lines.join("\n"))

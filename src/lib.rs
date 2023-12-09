@@ -11,6 +11,9 @@ pub mod day04;
 pub mod day05;
 pub mod day06;
 pub mod day07;
+pub mod day08;
+#[cfg(not(target_os = "macos"))]
+pub mod gpu_day08;
 
 /// The PTX code for the GPU kernel.
 #[cfg(not(target_os = "macos"))]

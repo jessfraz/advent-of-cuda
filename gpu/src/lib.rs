@@ -28,3 +28,4 @@
 extern crate alloc;
 
 pub mod add;
+pub mod day08;
