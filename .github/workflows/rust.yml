@@ -60,7 +60,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Build
-        run: cargo build --all
+        run: cargo build
 
       # Don't currently test because many tests rely on the system having a CUDA GPU
       # - name: Test
@@ -69,5 +69,5 @@ jobs:
       - name: Clippy
         env:
           RUSTFLAGS: -Dwarnings
-        run: cargo clippy --all --tests
+        run: cargo clippy --tests
 

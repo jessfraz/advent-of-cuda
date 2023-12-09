@@ -53,11 +53,6 @@ fn graph_traversal(
 
     let grid_size = (length as u32 + block_size - 1) / block_size;
 
-    println!(
-        "using {} blocks and {} threads per block",
-        grid_size, block_size
-    );
-
     // Actually launch the GPU kernel. This will queue up the launch on the
     // stream, it will not block the thread until the kernel is finished.
     unsafe {
