@@ -33,6 +33,6 @@ cuda_builder = "0.3.0"
 
 [workspace]
 members = [
-	#"generator",
+	"generator",
     "gpu",
 ]
