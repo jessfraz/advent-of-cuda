@@ -240,7 +240,7 @@ XXX = (XXX, XXX)"#;
         assert_eq!(super::solve_part_2(input).unwrap(), 6);
 
         // Load the file.
-        //let input = include_str!("../input/day08.txt");
-        //assert_eq!(super::solve_part_2(input).unwrap(), 15726453850399);
+        let input = include_str!("../input/day08.txt");
+        assert_eq!(super::solve_part_2(input).unwrap(), 15726453850399);
     }
 }

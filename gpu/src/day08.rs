@@ -39,7 +39,7 @@ pub unsafe fn graph_traversal(
             *elem = 1;
         }
 
-        if found {
+        if found && thread::first() {
             break;
         }
     }
