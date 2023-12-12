@@ -13,6 +13,8 @@ pub mod day06;
 pub mod day07;
 pub mod day08;
 pub mod day09;
+pub mod day10;
+pub mod day11;
 #[cfg(not(target_os = "macos"))]
 pub mod gpu_day08;
 
