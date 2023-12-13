@@ -83,7 +83,7 @@ impl TerrainMap {
 
         let columns: Vec<TerrainRow> = (0..self.0[0].0.len())
             .map(|i| self.0.iter().map(|c| c.0[i]).collect())
-            .map(|c| TerrainRow(c))
+            .map(TerrainRow)
             .collect();
 
         // Check all the columns.
