@@ -1,6 +1,7 @@
 //!  Day 12: Hot Springs
 use anyhow::Result;
 use itertools::Itertools;
+use rayon::prelude::*;
 
 /// Spring data.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -44,8 +45,8 @@ impl SpringRow {
     fn arrangements(&self) -> Result<u32> {
         if let Some(index) = self
             .springs
-            .iter()
-            .position(|spring| *spring == Spring::Unknown)
+            .par_iter()
+            .position_any(|spring| *spring == Spring::Unknown)
         {
             // If we have an unknown spring, we need to try both operational
             // and broken and add the results together.
@@ -113,6 +114,82 @@ impl SpringRow {
 
         Ok(SpringRow { springs, groups })
     }
+
+    /// Parse a row of springs, copied 5 times.
+    fn parse_part_2(s: &str) -> Result<SpringRow> {
+        let mut row = SpringRow::parse(s)?;
+
+        // Replace the list of spring conditions with five copies of itself (separated by ?).
+        row.springs = row
+            .springs
+            .iter()
+            .copied()
+            .chain([Spring::Unknown])
+            .cycle()
+            .take(row.springs.len() * 5 + 4)
+            .collect();
+        row.groups = row
+            .groups
+            .iter()
+            .copied()
+            .cycle()
+            .take(row.groups.len() * 5)
+            .collect();
+
+        Ok(row)
+    }
+}
+
+fn count_possible_arangements(
+    mut springs: Vec<Spring>,
+    groups: Vec<usize>,
+) -> Result<u64> {
+    // To make the Broken recursion case simpler.
+    springs.push(Spring::Operational);
+    let mut cache = vec![vec![None; springs.len()]; groups.len()];
+    count_possible_arangements_inner(&springs, &groups, &mut cache)
+}
+
+fn count_possible_arangements_inner(
+    springs: &[Spring],
+    groups: &[usize],
+    cache: &mut [Vec<Option<u64>>],
+) -> Result<u64> {
+    if groups.is_empty() {
+        return if springs.contains(&Spring::Broken) {
+            // Too many previous unknowns were counted as broken.
+            Ok(0)
+        } else {
+            // All remaining unknowns are operational.
+            Ok(1)
+        };
+    }
+    if springs.len() < groups.iter().sum::<usize>() + groups.len() {
+        // Not enough space for remaining numbers.
+        return Ok(0);
+    }
+    if let Some(cached) = cache[groups.len() - 1][springs.len() - 1] {
+        return Ok(cached);
+    }
+    let mut arangements = 0;
+    if springs[0] != Spring::Broken {
+        // Assume operational.
+        arangements +=
+            count_possible_arangements_inner(&springs[1..], groups, cache)?;
+    }
+    let next_group_size = groups[0];
+    if !springs[..next_group_size].contains(&Spring::Operational)
+        && springs[next_group_size] != Spring::Broken
+    {
+        // Assume broken.
+        arangements += count_possible_arangements_inner(
+            &springs[next_group_size + 1..],
+            &groups[1..],
+            cache,
+        )?;
+    }
+    cache[groups.len() - 1][springs.len() - 1] = Some(arangements);
+    Ok(arangements)
 }
 
 /// You finally reach the hot springs! You can see steam rising from secluded
@@ -160,7 +237,7 @@ impl SpringRow {
 /// some of this information in a different format! After the list of springs
 /// for a given row, the size of each *contiguous group of damaged springs* is
 /// listed in the order those groups appear in the row. This list always
-/// accounts for every damaged spring, and each number is the entire size of its
+/// acgroups for every damaged spring, and each number is the entire size of its
 /// contiguous group (that is, groups are always separated by at least one
 /// operational spring: `####` would always be `4`, never `2,2`).
 ///
@@ -235,12 +312,12 @@ impl SpringRow {
 /// * `????.######..#####. 1,6,5` - `*4*` arrangements
 /// * `?###???????? 3,2,1` - `*10*` arrangements
 ///
-/// Adding all of the possible arrangement counts together produces a total of
+/// Adding all of the possible arrangement groups together produces a total of
 /// `*21*` arrangements.
 ///
 /// For each row, count all of the different arrangements of operational and
 /// broken springs that meet the given criteria. *What is the sum of those
-/// counts?*
+/// groups?*
 pub fn solve_part_1(input: &str) -> Result<u32> {
     let spring_rows = input
         .lines()
@@ -248,11 +325,11 @@ pub fn solve_part_1(input: &str) -> Result<u32> {
         .collect::<Vec<_>>();
 
     let arrangements = spring_rows
-        .iter()
+        .par_iter()
         .map(|r| r.arrangements().unwrap())
         .collect::<Vec<u32>>();
 
-    Ok(arrangements.iter().sum())
+    Ok(arrangements.par_iter().sum())
 }
 
 /// As you look out at the field of springs, you feel like there are way more
@@ -292,13 +369,27 @@ pub fn solve_part_1(input: &str) -> Result<u32> {
 /// * `????.######..#####. 1,6,5` - `*2500*` arrangements
 /// * `?###???????? 3,2,1` - `*506250*` arrangements
 ///
-/// After unfolding, adding all of the possible arrangement counts together
+/// After unfolding, adding all of the possible arrangement groups together
 /// produces `*525152*`.
 ///
 /// Unfold your condition records; *what is the new sum of possible arrangement
-/// counts?*
-pub fn solve_part_2(_input: &str) -> Result<u32> {
-    todo!()
+/// groups?*
+pub fn solve_part_2(input: &str) -> Result<u64> {
+    let spring_rows = input
+        .lines()
+        .map(|l| SpringRow::parse_part_2(l).unwrap())
+        .collect::<Vec<_>>();
+
+    let mut arrangements = Vec::new();
+    for row in &spring_rows {
+        let a = count_possible_arangements(
+            row.springs.clone(),
+            row.groups.clone(),
+        )?;
+        arrangements.push(a);
+    }
+
+    Ok(arrangements.par_iter().sum())
 }
 
 #[cfg(test)]
@@ -328,7 +419,7 @@ mod tests {
 ????.#...#... 4,1,1
 ????.######..#####. 1,6,5
 ?###???????? 3,2,1"#;
-        assert_eq!(super::solve_part_2(input).unwrap(), 21);
+        assert_eq!(super::solve_part_2(input).unwrap(), 525152);
 
         // Load the file.
         let input = include_str!("../input/day12.txt");
