@@ -119,7 +119,8 @@ impl SpringRow {
     fn parse_part_2(s: &str) -> Result<SpringRow> {
         let mut row = SpringRow::parse(s)?;
 
-        // Replace the list of spring conditions with five copies of itself (separated by ?).
+        // Replace the list of spring conditions with five copies of itself
+        // (separated by ?).
         row.springs = row
             .springs
             .iter()
@@ -423,6 +424,6 @@ mod tests {
 
         // Load the file.
         let input = include_str!("../input/day12.txt");
-        assert_eq!(super::solve_part_2(input).unwrap(), 0);
+        assert_eq!(super::solve_part_2(input).unwrap(), 204640299929836);
     }
 }
