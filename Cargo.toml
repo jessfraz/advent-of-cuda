@@ -16,7 +16,7 @@ cust = "0.3.2"
 # We don't depend on these directly, but want to pin them to specific versions.
 # This is because we're bound to a specific rustc version but cargo will chose
 # the newest semver compatible versions anyway.
-byteorder = "=1.4.0"
+byteorder = "=1.5.0"
 cc = "=1.0.78"
 jobserver = "=0.1.25"
 log = "=0.4.17"
