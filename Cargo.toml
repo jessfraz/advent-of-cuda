@@ -23,7 +23,7 @@ log = "=0.4.17"
 rayon-core = "=1.10.0"
 regex = "=1.7.1"
 regex-syntax = "=0.6.28"
-thread_local = "=1.1.4"
+thread_local = "=1.1.8"
 tracing-subscriber = "=0.3.17"
 
 [dev-dependencies]
